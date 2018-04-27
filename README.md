@@ -33,8 +33,14 @@
   5. 连接处样式  `lineJoin = type`
   6. 用 `setLineDash` 方法和 `lineDashOffset` 属性来制定虚线样式. `setLineDash` 方法接受一个数组，来指定线段与间隙的交替；`lineDashOffset` 属性设置起始偏移量
   7. 渐变 Gradients
-    1. `createLinearGradient(x1, y1, x2, y2)` 渐变的起点与终点
-    2. `createRadialGradient(x1, y1, r1, x2, y2, r2)` 前三个定义一个以 (x1,y1) 为原点，半径为 r1 的圆，后三个参数则定义另一个以 (x2,y2) 为原点，半径为 r2 的圆
-    3. `gradient.addColorStop(position, color)` position 参数必须是一个 0.0 与 1.0 之间的数值，表示渐变中颜色所在的相对位置。
-    4. 创建图形
+      1. `createLinearGradient(x1, y1, x2, y2)` 渐变的起点与终点
+      2. `createRadialGradient(x1, y1, r1, x2, y2, r2)` 前三个定义一个以 (x1,y1) 为原点，半径为 r1 的圆，后三个参数则定义另一个以 (x2,y2) 为原点，半径为 r2 的圆
+      3. `gradient.addColorStop(position, color)` position 参数必须是一个 0.0 与 1.0 之间的数值，表示渐变中颜色所在的相对位置。
+      4. 创建图形
   8. 图案样式 Patterns 
+  9. 阴影
+## [绘制文本](text.html)
+  1. 在指定的(x,y)位置填充指定的文本，绘制的最大宽度是可选的`fillText(text, x, y [, maxWidth])`
+  2. 在指定的(x,y)位置绘制文本边框，绘制的最大宽度是可选的`strokeText(text, x, y [, maxWidth])`
+  3. 有样式的文本`font = value` `textAlign = value` `textBaseline = value` `direction = value`
+  4. 预测量文本宽度 `measureText()`

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas text</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body onload="draw();">
+  <canvas id="tutorial" width="500" height="500"></canvas>
+  <script>
+    function draw() {
+      var canvas = document.getElementById('tutorial');
+      if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+        /*一个填充文本的示例*/
+        ctx.font = "48px serif";
+        ctx.fillText("Hello world", 10, 50);
+        /*一个文本边框的示例*/
+        ctx.textBaseline = "hanging";
+        ctx.font = "48px serif";
+        ctx.strokeText("Hello world", 10, 150);
+        /*预测量文本宽度*/
+        var text = ctx.measureText("Hello world"); // TextMetrics object
+        console.log(text.width); // 16;
+      }
+    }
+  </script>
+</body>
+
+</html>
