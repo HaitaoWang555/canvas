@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas image</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body onload="draw();">
+  <canvas id="tutorial" width="500" height="500"></canvas>
+  <script>
+    function draw() {
+      var canvas = document.getElementById('tutorial');
+      if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        img.onload = function () {
+          ctx.drawImage(img, 0, 0);
+        }
+        img.src = 'images/Canvas_backdrop.png';
+        var img = new Image();
+        img.onload = function () {
+          ctx.drawImage(img, 250, 0, 150, 120);
+        }
+        img.src = 'images/Canvas_backdrop.png';
+      }
+      var img = new Image();
+      img.onload = function () {
+        ctx.drawImage(img, 20, 40, 80, 50, 0, 150, 80, 50)
+      }
+      img.src = 'images/Canvas_backdrop.png';
+    }
+  </script>
+</body>
+
+</html>

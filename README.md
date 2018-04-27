@@ -44,3 +44,8 @@
   2. 在指定的(x,y)位置绘制文本边框，绘制的最大宽度是可选的`strokeText(text, x, y [, maxWidth])`
   3. 有样式的文本`font = value` `textAlign = value` `textBaseline = value` `direction = value`
   4. 预测量文本宽度 `measureText()`
+##[使用图片](image.html)
+  1. 绘制图片`drawImage(image, x, y)`
+  2. 缩放 `drawImage(image, x, y, width, height)`
+  3. 切片 `drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)`
+   
