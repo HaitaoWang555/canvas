@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>弹球游戏</title>
+</head>
+
+<body>
+  <canvas id="canvas" style="width: 500px;height: 500px;border: 1px solid"> </canvas>
+  <script>
+    var log = console.log.bind(console)
+
+    var canvas = document.querySelector('#canvas')
+    var ctx = canvas.getContext('2d')
+    var x = 100
+    var y = 100
+
+    ctx.fillStyle = "red"
+    ctx.fillRect(x, y, 100, 5)
+
+    window.addEventListener('keydown', function (event) {
+      var k = event.key
+      if (k === 'a') {
+        x -= 10
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = "red"
+        ctx.fillRect(x, y, 100, 5)
+      } else if (k === 'd') {
+        x += 10
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = "red"
+        ctx.fillRect(x, y, 100, 5)
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>
