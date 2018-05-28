@@ -27,12 +27,33 @@
       return o
     }
     var initGame = function () {
-      var g = {}
+      var g = {
+        actions: {},
+        keydowns: {},
+      }
       var canvas = document.querySelector('#canvas')
       var ctx = canvas.getContext('2d')
       g.canvas = canvas
       g.ctx = ctx
-      setInterval(function(){
+      window.addEventListener('keydown', function (event) {
+        // log(event.key)
+        g.keydowns[event.key] = true
+      })
+      window.addEventListener('keyup', function (event) {
+        g.keydowns[event.key] = false
+      })
+      g.registerAction = function (key, callback) {
+        g.actions[key] = callback
+      }
+      setInterval(function () {
+        var actions = Object.keys(g.actions)
+        log(actions)
+        for (let i = 0; i < actions.length; i++) {
+          var key = actions[i];
+          if (g.keydowns[key]) {
+            g.actions[key]()
+          }
+        }
         g.updata()
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         g.draw()
@@ -41,36 +62,19 @@
     }
     var _main = function () {
       var game = initGame()
-      var leftDown, rightDown
       var paddle = Paddle()
 
-      game.ctx.fillStyle = "red"
-      game.ctx.fillRect(paddle.x, paddle.y, 100, 5)
+      game.registerAction('a', function () {
+        paddle.moveLeft()
+      })
+      game.registerAction('d', function () {
+        paddle.moveRight()
+      })
+      game.updata = function () {
 
-      window.addEventListener('keydown', function (event) {
-        var k = event.key
-        if (k === 'a') {
-          leftDown = true
-        } else if (k === 'd') {
-          rightDown = true
-        }
-      })
-      window.addEventListener('keyup', function (event) {
-        var k = event.key
-        if (k === 'a') {
-          leftDown = false
-        } else if (k === 'd') {
-          rightDown = false
-        }
-      })
-      game.updata = function(){
-        if (leftDown) {
-          paddle.moveLeft()
-        } else if (rightDown) {
-          paddle.moveRight()
-        }
       }
       game.draw = function () {
+        game.ctx.fillStyle = "red"
         game.ctx.fillRect(paddle.x, paddle.y, 100, 5)
       }
     }
