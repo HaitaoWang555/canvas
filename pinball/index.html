@@ -33,12 +33,23 @@
       o.moveRight = function () {
         o.x += o.speed
       }
+      o.collide = function (ball) {
+
+        if (ball.y + ball.r >= o.y) {
+
+          if (ball.x + ball.r > o.x && ball.x + ball.r < o.x + o.w) {
+            return true
+          }else {
+            ball.fired = false
+          }
+        }
+      }
       return o
     }
     var Ball = function () {
       var o = {
         x: 250,
-        y: 390,
+        y: 385,
         r: 10,
         speedX: 10,
         speedY: 10,
@@ -49,7 +60,7 @@
       }
       o.move = function () {
         if (o.fired) {
-          
+
           if (o.x < 0 || o.x > 490) {
             o.speedX = -o.speedX
           }
@@ -57,7 +68,6 @@
             o.speedY = -o.speedY
           }
           o.x += o.speedX
-          log(o.x)
           o.y += o.speedY
         }
       }
@@ -107,9 +117,12 @@
       })
       game.registerAction('f', function () {
         ball.fire()
-      })      
+      })
       game.updata = function () {
         ball.move()
+        if (paddle.collide(ball)) {
+          ball.speedY = -ball.speedY
+        }
       }
       game.draw = function () {
         game.ctx.fillStyle = "red"
