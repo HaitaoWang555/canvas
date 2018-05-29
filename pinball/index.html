@@ -19,6 +19,7 @@
   <canvas id="canvas" width="500" height="500"> </canvas>
   <script>
     var log = console.log.bind(console)
+    /* 构造挡板 */
     var Paddle = function () {
       var o = {
         x: 200,
@@ -33,6 +34,7 @@
       o.moveRight = function () {
         o.x += o.speed
       }
+      /* 判断相撞及相撞之后更新画布函数 */
       o.collide = function (ball) {
 
         if (ball.y + ball.r >= o.y) {
@@ -50,6 +52,7 @@
       }
       return o
     }
+    /* 构造弹球 */
     var Ball = function () {
       var o = {
         x: 250,
@@ -59,9 +62,11 @@
         speedY: 10,
         fired: false,
       }
+      /* 弹球发射  */
       o.fire = function () {
         o.fired = true
       }
+      /* 弹球运动  */
       o.move = function () {
         if (o.fired) {
 
@@ -77,7 +82,8 @@
       }
       return o
     }
-    var initGame = function () {
+    /* 初始化游戏 */
+    var initGame = function () { 
       var g = {
         actions: {},
         keydowns: {},
@@ -86,6 +92,7 @@
       var ctx = canvas.getContext('2d')
       g.canvas = canvas
       g.ctx = ctx
+      /* 监听键盘事件 */
       window.addEventListener('keydown', function (event) {
         g.keydowns[event.key] = true
       })
@@ -95,6 +102,7 @@
       g.registerAction = function (key, callback) {
         g.actions[key] = callback
       }
+      /* 更新画布 */
       setInterval(function () {
         var actions = Object.keys(g.actions)
         for (let i = 0; i < actions.length; i++) {
@@ -109,6 +117,7 @@
       }, 1000 / 30)
       return g
     }
+    /* 运行主函数 */
     var _main = function () {
       var game = initGame()
       var paddle = Paddle()
@@ -124,6 +133,7 @@
       })
       game.updata = function () {
         ball.move()
+        /* 相撞后反弹 */
         if (paddle.collide(ball)) {
           ball.speedY = -ball.speedY
         }
