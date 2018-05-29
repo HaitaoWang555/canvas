@@ -34,19 +34,21 @@
       o.moveRight = function () {
         o.x += o.speed
       }
+      o.reset = function () {
+        o.x = 200
+        o.y = 400
+      }
       /* 判断相撞及相撞之后更新画布函数 */
-      o.collide = function (ball) {
+      o.collide = function (ball, game) {
 
         if (ball.y + ball.r >= o.y) {
 
           if (ball.x + ball.r > o.x && ball.x + ball.r < o.x + o.w) {
             return true
-          }else {
-            ball.fired = false
-            ball.x = 250
-            ball.y = 385
-            o.x = 200
-            o.y = 400
+          } else {
+            ball.reset()
+            o.reset()
+            game.reset()
           }
         }
       }
@@ -61,6 +63,11 @@
         speedX: 10,
         speedY: 10,
         fired: false,
+      }
+      o.reset = function () {
+        o.x = 250
+        o.y = 385
+        o.fired = false
       }
       /* 弹球发射  */
       o.fire = function () {
@@ -83,7 +90,7 @@
       return o
     }
     /* 初始化游戏 */
-    var initGame = function () { 
+    var initGame = function () {
       var g = {
         actions: {},
         keydowns: {},
@@ -122,19 +129,27 @@
       var game = initGame()
       var paddle = Paddle()
       var ball = Ball()
-      game.registerAction('a', function () {
-        paddle.moveLeft()
-      })
-      game.registerAction('d', function () {
-        paddle.moveRight()
-      })
-      game.registerAction('f', function () {
-        ball.fire()
-      })
+      /* 监听键盘事件函数 */
+      var gameRegister = function(){
+        game.registerAction('f', function () {
+          game.registerAction('a', function () {
+            paddle.moveLeft()
+          })
+          game.registerAction('d', function () {
+            paddle.moveRight()
+          })
+          ball.fire()
+        })
+      } 
+      gameRegister()
+      game.reset = function () {
+        game.actions = {}
+        gameRegister()
+      }
       game.updata = function () {
         ball.move()
         /* 相撞后反弹 */
-        if (paddle.collide(ball)) {
+        if (paddle.collide(ball, game)) {
           ball.speedY = -ball.speedY
         }
       }
