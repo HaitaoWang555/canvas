@@ -111,18 +111,21 @@
       /* 碰撞砖块  */
       o.collide = function (ball) {
         // 小球在砖块下面
-        if (ball.y - ball.r === o.y + o.h - 5 || ball.y + ball.r === o.y + 5) {
+        if ((ball.y - ball.r === o.y + o.h - 5 || ball.y + ball.r === o.y + 5) && o.lifeValue > 0) {
 
           if (ball.x + ball.r > o.x && ball.x - ball.r < o.x + o.w) {
+            debugger
             o.lifeValue -= 1
             return true
           }
-        } else if (ball.x + ball.r === o.x || ball.x === o.x + o.w) {
+        } else if ((ball.x + ball.r === o.x || ball.x === o.x + o.w) && o.lifeValue > 0) {
           if (ball.y + ball.r > o.y - 2 && ball.y - ball.r < o.y + o.h + 2) {
+            debugger
             o.lifeValue -= 1
             ball.levelCollide = true
-          }190
-        }else if (ball.x === o.x && ball.y === o.y + 5) {
+          }
+        }else if ((ball.x === o.x && ball.y === o.y + 5) && o.lifeValue > 0) {
+          debugger
           o.lifeValue -= 1
           ball.diagonalCollide = true
         }
@@ -216,9 +219,6 @@
         if (block.lifeValue > 0) {
           game.ctx.fillStyle = "black"
           game.ctx.fillRect(block.x, block.y, block.w, block.h)
-        }else {
-          block.w = 0
-          block.h = 0
         }
       }
     }
