@@ -22,9 +22,9 @@
     /* 构造挡板 */
     var Paddle = function () {
       var o = {
-        x: 200,
+        x: 0,
         y: 400,
-        w: 100,
+        w: 500,
         h: 5,
         speed: 5,
       }
@@ -43,7 +43,7 @@
 
         if (ball.y + ball.r >= o.y) {
 
-          if (ball.x + ball.r > o.x && ball.x + ball.r < o.x + o.w) {
+          if (ball.x + ball.r > o.x && ball.x - ball.r < o.x + o.w) {
             return true
           } else {
             ball.reset()
@@ -63,15 +63,22 @@
         speedX: 10,
         speedY: 10,
         fired: false,
+        levelCollide: false,
       }
       o.reset = function () {
         o.x = 250
         o.y = 385
         o.fired = false
+        levelCollide: false
+        diagonalCollide: false
       }
       /* 弹球发射  */
       o.fire = function () {
         o.fired = true
+      }
+      /*游戏暂停 方便调试*/
+      o.pause = function () {
+        o.fired = false
       }
       /* 弹球运动  */
       o.move = function () {
@@ -85,6 +92,39 @@
           }
           o.x += o.speedX
           o.y += o.speedY
+        }
+      }
+      return o
+    }
+    /* 构造砖块 */
+    var Block = function () {
+      var o = {
+        x: 200,
+        y: 150,
+        w: 150,
+        h: 100,
+        lifeValue: 2,
+      }
+      o.reset = function () {
+
+      }
+      /* 碰撞砖块  */
+      o.collide = function (ball) {
+        // 小球在砖块下面
+        if (ball.y - ball.r === o.y + o.h - 5 || ball.y + ball.r === o.y + 5) {
+
+          if (ball.x + ball.r > o.x && ball.x - ball.r < o.x + o.w) {
+            o.lifeValue -= 1
+            return true
+          }
+        } else if (ball.x + ball.r === o.x || ball.x === o.x + o.w) {
+          if (ball.y + ball.r > o.y - 2 && ball.y - ball.r < o.y + o.h + 2) {
+            o.lifeValue -= 1
+            ball.levelCollide = true
+          }190
+        }else if (ball.x === o.x && ball.y === o.y + 5) {
+          o.lifeValue -= 1
+          ball.diagonalCollide = true
         }
       }
       return o
@@ -129,8 +169,12 @@
       var game = initGame()
       var paddle = Paddle()
       var ball = Ball()
+      var block = Block()
       /* 监听键盘事件函数 */
-      var gameRegister = function(){
+      game.registerAction('p', function () {
+        ball.pause()
+      })
+      var gameRegister = function () {
         game.registerAction('f', function () {
           game.registerAction('a', function () {
             paddle.moveLeft()
@@ -140,7 +184,7 @@
           })
           ball.fire()
         })
-      } 
+      }
       gameRegister()
       game.reset = function () {
         game.actions = {}
@@ -149,8 +193,17 @@
       game.updata = function () {
         ball.move()
         /* 相撞后反弹 */
-        if (paddle.collide(ball, game)) {
+        if (paddle.collide(ball, game) || block.collide(ball)) {
           ball.speedY = -ball.speedY
+        }
+        if (ball.levelCollide) {
+          ball.speedX = -ball.speedX
+          ball.levelCollide = false
+        }
+        if (ball.diagonalCollide) {
+          ball.speedX = -ball.speedX
+          ball.speedY = -ball.speedY
+          ball.diagonalCollide = false
         }
       }
       game.draw = function () {
@@ -160,6 +213,13 @@
         game.ctx.beginPath()
         game.ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI)
         game.ctx.fill()
+        if (block.lifeValue > 0) {
+          game.ctx.fillStyle = "black"
+          game.ctx.fillRect(block.x, block.y, block.w, block.h)
+        }else {
+          block.w = 0
+          block.h = 0
+        }
       }
     }
     _main()
